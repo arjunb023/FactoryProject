@@ -1,0 +1,363 @@
+System Name: Kit Stand
+	System Description: The Kit Stand will be used to hold empty kits that the Kit Robot will obtain from a Cart. The Kit Stand holds the kits while Parts Robot fills them up. The Kit Robot will move the completed kits from an assembly Kit Stand to an inspection Kit Stand. The Camera will take a picture of the completed kit and if it is acceptable, the Kit Robot will move the completed kit to the  
+	Instance Variables:
+		private GUIKit[] kits;
+		private int xPos;
+		private int yPos;
+		private int width;
+		private int height;
+		private int angle;
+		private String name;
+		private ImageIcon image;
+		private final int standSize = 3;
+		private final int buffer = 10;
+		private final ImageIcon stdImage = new ImageIcon("images/kitstand.png");
+		private final int stdWidth = stdImage.getIconWidth();
+		private final int stdHeight = stdImage.getIconHeight();
+		private Rectangle2D.Double kitStandPlaceHolder;
+		
+	Methods:
+		Method Name:
+			GUIKitStand
+		Formal Parameters:
+			int a - angle
+			int kitSize - number of parts in kit
+		Formal Type:
+			public
+		Return Type:
+			none
+		Method Description:
+			Instantiates all variables to default values
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getX
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns kit stand's x position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getY
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns kit stand's y position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None  
+		Input and Output Format:
+			None
+
+		Method Name:
+			setX
+		Formal Parameters:
+			int x
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets kit stand's x position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			setY
+		Formal Parameters:
+			int y
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets kit stand's y position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getWidth
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns kit stand's width
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			getHeight
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns kit stand's height
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			zoom
+		Formal Parameters:
+			amount
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Makes kit stand appear (amount) times larger or smaller and sets new x and y positions to be centered properly
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			rotate
+		Formal Parameters:
+			amount
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Rotates stand (and kits that it holds) by given amount
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			update
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			none
+		Method Description:
+			Updates the x, y, width, and height for the kitStand item
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			draw
+		Formal Parameters:
+			Graphics g1
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			Draws kitStand, including any rotation necessary
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getKitFromStand
+		Formal Parameters:
+			int i - which kit you want
+		Formal Type:
+			public
+		Return Type:
+			GUIKit
+		Method Description:
+			Returns the kit at stand position i
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			deleteKit
+		Formal Parameters:
+			int i - which kit you want to delete
+		Formal Type:
+			public
+		Return Type:
+			none
+		Method Description:
+			Deletes the kit at stand position i
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			putKitOnStand
+		Formal Parameters:
+			GUIKit k - which kit you want to put on the stand
+			int i - where you want to put the kit
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Places GUIKit k at position i
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			getName
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			String
+		Method Description:
+			Returns kitStand's name
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+
+		Method Name:
+			givePart
+		Formal Parameters:
+			GUIPart part
+			GUIComponent giver
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			getPart
+		Formal Parameters:
+			int position
+		Formal Type:
+			None
+		Return Type:
+			GUIPart
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			gotPart
+		Formal Parameters:
+			GUIPart part
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None

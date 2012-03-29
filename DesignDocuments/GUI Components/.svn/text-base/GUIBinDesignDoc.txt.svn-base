@@ -1,0 +1,445 @@
+GUIBin Class:
+
+	Instance Variables:
+		private Rectangle2D.Double binPlaceholder
+		private ArrayList<GUIPart> parts
+		public PartType type
+		private int xPos
+		private int yPos
+		private int width
+		private int height
+		private int angle
+		private String name
+		private ImageIcon image
+		private int stdWidth
+		private int stdHeight
+		private ImageIcon stdImage
+		
+	Method Name:
+		getName
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String
+	Method Description:
+		Returns the name of the Bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		givePart
+	Formal Parameters:
+		GUIPart part
+		GUIComponent giver
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Overrides the GUIComponentInterface function givePart.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getPart
+	Formal Parameters:
+		int position
+	Formal Type:
+		public
+	Return Type:
+		GUIPart
+	Method Description:
+		Overrides the GUIComponentInterface function getPart.
+		Returns null.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+	
+	Method Name:
+		gotPart
+	Formal Parameters:
+		GUIPart part
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Overrides the GUIComponentInterface function gotPart.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+	
+	Method Name:
+		update
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Convenience method for other classes to change the display 
+		representing this bin after an operation is completed on the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+	
+	Method Name:
+		draw
+	Formal Parameters:
+		Graphics g1
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Draws the bin to the screen in the correct location at the correct size and angle.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		moveX
+	Formal Parameters:
+		int numPixels
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Moves the part in the horizontal direction by the specified number of pixels. If numPixels is positive, moves right.
+		If numPixels is negative, moves left.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		moveY
+	Formal Parameters:
+		int numPixels
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Moves the part in the vertical direction by the specified number of pixels. If numPixels is positive, moves up.
+		If numPixels is negative, moves down.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		zoom
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the size of the bin bigger or smaller by the specified amount.
+		If amount is positive, zooms in. If amount is negative, zooms out.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		rotate
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Rotates the bin by the specified amount. If amount is positive, rotates clockwise.
+	 	If amount is negative, rotates counter clockwise.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		addPart
+	Formal Parameters:
+		GUIPart newPart
+	Formal Type:
+		public
+	Return Type:
+		None
+	Method Description:
+		Adds a part to the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		ArrayList Class:
+			add()
+	Input and Output Format:
+		None
+		
+	Method Name:
+		removePart
+	Formal Parameters:
+		int index
+	Formal Type:
+		public
+	Return Type:
+		None
+	Method Description:
+		Removes the part at the specified index from bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		ArrayList Class:
+			remove()
+	Input and Output Format:
+		None
+		
+	Method Name:
+		setX
+	Formal Parameters:
+		int x
+	Formal Type:
+		public
+	Return Type:
+		None
+	Method Description:
+		Sets the x position of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		setY
+	Formal Parameters:
+		int y
+	Formal Type:
+		public
+	Return Type:
+		None
+	Method Description:
+		Sets the y position of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		setAngle
+	Formal Parameters:
+		int a
+	Formal Type:
+		public
+	Return Type:
+		None
+	Method Description:
+		Sets the angle of rotation of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getNumParts
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the number of parts in the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		ArrayList Class:
+			size()
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getPartAt
+	Formal Parameters:
+		int index
+	Formal Type:
+		public
+	Return Type:
+		GUIPart
+	Method Description:
+		Returns the part at the specified index.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		ArrayList Class:
+			get()
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getType
+	Formal Parameters:
+		void
+	Formal Type:
+		public
+	Return Type:
+		PartType
+	Method Description:
+		Returns the type of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current x position of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current y position of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None	
+		
+	Method Name:
+		getWidth
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the width of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None	
+		
+	Method Name:
+		getHeight
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the height of the bin.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None

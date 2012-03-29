@@ -1,0 +1,253 @@
+GUINest Class:
+	Instance variables:  
+		private int mySize = 12;
+		private Rectangle2D.Double nestPlaceholder;
+		private NestState state;
+		private ArrayList<GUIPart> parts;
+		private int xPos;
+		private int yPos;
+		private int width;
+		private int height;
+		private String name;
+		private ImageIcon image;
+		private final int stdWidth = 78;
+		private final int stdHeight = 60;
+		private final ImageIcon stdImage = new ImageIcon("images/nest_grid.png");
+		private int border = 3;
+		private int plusRow = 18;
+		private int plusCol = 18;
+		private int nextFreeCol;
+		private int nextFreeRow;
+		private boolean stateChange = true;
+		private int[] colArray;
+		private int[] rowArray;
+		private boolean[] isFull;
+		public boolean fullState;
+		private Nest myAgent;
+		private int nestNum;
+		private boolean endPartIn;
+
+		
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current x position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current y position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		ZoomIn
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the size of the part bigger by the specified amount.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+		
+	Method Name:
+		IAmFull()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		Boolean
+	Method Description:
+		This tells the camera or whatever picks up the nest that it is full.
+	Method Preconditions:
+		State must be full
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		readyToRecieve()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		Boolean
+	Method Description:
+		This tells the agent that the nest is ready to be picked up.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+		
+	Method Name:
+		givePart()
+	Formal Parameters:
+		GUIPart part, GUIComponent giver
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Gives a part to the nest
+	Method Preconditions:
+		State must not be full
+	Method Postconditions: 
+		State will be partially filled.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		doCheckFull()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if full
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getPart()
+	Formal Parameters:
+		int position
+	Formal Type:
+		public
+	Return Type:
+		GUIPart
+	Method Description:
+		Gives a part
+	Method Preconditions:
+		Must have a part
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		fillNest()
+	Formal Parameters:
+		ArrayList<GUIPart> partsInc
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		fills the nest
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	
+	Method Name:
+		dumpParts()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		fills the nest
+	Method Preconditions:
+		must have atleast 1 part
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		draw()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		draws the nest
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+Getters and Setters:
+	setNestAgent
+	getName
+	update
+	setNestNum
+	getState
+	getX
+	getY
+	getWidth
+	getHeight

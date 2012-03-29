@@ -1,0 +1,47 @@
+ControlPanel Class:
+	Instance Variables:
+		ArrayList<agent> agents
+		static final int CART_RAIL_X, CART_RAIL_Y, NEST_1X, NEST_2X, DIVERTER_XOFFSET, DIVERTER_YOFFSET,
+						 KITSIZE, PANEL_X, PANEL_Y
+		boolean explodingParts
+		ArrayList<GUIComponent> underParts, kits, parts, bins, overParts
+		Timer timer
+		ArrayList<bin> gantryBins
+		Point mouseClick
+		int tracePrintCounter
+		(Instantiate all agents and GUI components, as well as Trace/States panels)
+	
+	Methods:
+		FactoryPanel() -- constructor
+			Add mouse listener and change panel attributes
+			Executes all setting of Agents to their GUI and vice versa
+			Sets GUI coordinates of each component in a relative manner
+			Add all parts to the GUIComponent arraylists in the appropriate order for drawing purposes
+			Execute setCMAgentConnections()
+			Initialize the states panel
+		actionPerformed(ActionEvent ae)
+			If explosive non-normative is executed, explode parts
+			Implement the TracePrintCounter
+			Trigger the updates of all GUIComponents on every timer expiration and repaint()
+		paintComponent(Graphics g)
+			Loop through and call draw functions of all GUIComponents in the GUIComponent arraylists
+		public void startAll()
+			Starts the timer
+		public void stopAll()
+			Stops the timer
+		addAgents()
+			Add all Agents to an arraylist of agents
+		startThreads()
+			Loop through agents and start all Agent threads
+		stopThreads()
+			Loop through agents and stop all Agent threads
+		setCMAgentConnections()
+			addConfiguredAgent to the cell manager and set the cell manager of each related gui component
+		getCMA()
+			Returns a reference to the cell manager agent
+		mouseClicked(MouseEvent me)
+			Prints the name of the part clicked on
+		mouseExited, mousePressed, mouseReleased(MouseEvent me)
+			Empty implementations to satisfy the interface
+		explodeParts()
+			Sets explodingParts boolean to true

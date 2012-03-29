@@ -1,0 +1,372 @@
+Elias Shanaa
+6467756468
+
+This is the Nest Agent, which handles one nest. 
+
+//DATA:
+
+int counter = 0 
+CameraSystem	 			cameraSystemAgent 						// Reference to my camera agent
+Lane	 					laneAgent 								// Reference to the lane agent
+GUINest 					myGuiNest 								// Reference to my gui nest
+ArrayList<GUIPart>			myParts = new ArrayList<GUIPart>() 		// ArrayList of type GUIPart, gotten from the gui
+GUIPart 					lanePart 								// Reference to the lane part coming into the nest
+int 						nestNum 								// int of the gui nest's number
+CellManagerAgent			cellManager 							// Reference to my cell manager agent
+PartType					partType 								// Current part type
+
+boolean						pendingLaneRequest = false 				// This boolean keeps track of whether there are parts the lane is waiting to send
+boolean 					firstPurge = false 						// This boolean ensures that I purge parts if my nest is not full 
+	
+AtomicInteger				pendingLaneParts = new AtomicInteger(0) // Integer of the pending lane parts
+	
+
+
+enum of the Nest's action state.
+public enum NestActionState  
+		NONE,IDLE,CHECKING,RECEIVING_PART,DUMPING_PARTS,PURGING_PARTS,
+		WAITING_FOR_SETTLEMENT_BEFORE_PURGE,FINISH_PURGE,FIX_NEST
+	 
+	
+public enum NestPossessionState
+	EMPTY,FILLING,EMPTYING_TO_ROBOT,FULL
+	 
+NestPossessionState			guiStatus 								// Local reference to my nest's possession state
+NestActionState				agentStatus 							// Local reference to my agent's action state
+	
+
+
+the GUIPart received from Lane in msgHereIsPart
+GUIPart partThatLaneGave = null 
+
+the GUIPart received from GUINest in msgPartAdded
+GUIPart partThatLastSettled = null 
+	
+	
+
+	
+//SETTER METHODS:
+set the cell manager agent
+
+public void setCellManagerAgent(CellManagerAgent ca)
+	cellManager = ca 
+ 
+public void setNestNum(int n)
+	nestNum = n 
+ 
+ 
+Set the gui nest
+public void setGuiNest(GUINest guiNest) 
+	myGuiNest = guiNest 
+ 
+ 
+Set the lane agent
+public void setLaneAgent(Lane la) 
+	this.laneAgent = la 
+ 
+ 
+Set the Camera Agent
+public void setCameraSystemAgent(CameraSystem cs)
+	this.cameraSystemAgent = cs 
+ 
+
+//GETTER METHODS:
+
+This returns whether the nest is full or not
+	public boolean getFullState() 
+		if (this.guiStatus == NestPossessionState.FULL)
+			return true 
+		 
+		return false 
+	 
+	 
+This returns the nest num
+
+public int getNestNum()
+	return nestNum 
+ 
+public String getName()
+	return this.name 
+ 
+
+//MESSAGES:
+ 
+This message is sent by the lane agent, asking if the nest is ready for a part.
+public void msgPartReady(Lane la) 
+	pendingLaneRequest = true 
+	this.agentStatus = NestActionState.CHECKING 
+	
+This message is sent by the nest when it is full
+public void msgIAmFull(ArrayList<GUIPart> p, int num) 
+	nestNum = num 
+	
+	//  If I am not on any purge state
+	if (this.agentStatus != NestActionState.PURGING_PARTS && this.agentStatus != NestActionState.FINISH_PURGE && !firstPurge
+			&& this.agentStatus != NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE)
+	 
+		 
+		//Clear my parts if my list is populated
+		if (myParts.size() != 0)
+		 
+			myParts.clear() 
+		 
+		synchronized(p)
+		 
+			for (int i = 0  i < p.size()  i++)
+			 
+				myParts.add(p.get(i)) 
+			 
+		 
+		
+		if (myParts.size() != 12)
+		 
+			print("ERROR: Got a bad list from the GUINest. Not sending parts to camera.") 
+		 
+		else
+		 
+			print("GUI possession state is Full.") 
+			this.guiStatus = NestPossessionState.FULL 	
+			cameraSystemAgent.msgIAmFull(this, myParts) 				// Sending the CameraSystemAgent my list of parts
+		 
+	 
+	else
+	 
+		print("GUI possession state is Full2.") 
+		this.guiStatus = NestPossessionState.FULL 
+		if (firstPurge)
+			 
+				
+			 
+		 
+		stateChanged() 
+	 
+	
+	 
+Message called by the lane agent, passes the part p which gets passed to the nest
+public void msgHereIsPart(GUIPart p)
+	this.partThatLaneGave = p 
+	lanePart = p 
+	this.agentStatus = NestActionState.RECEIVING_PART 
+
+public void msgPartAdded(GUIPart p)
+ 
+	pendingLaneParts.set(pendingLaneParts.get() - 1) 
+	partThatLastSettled = p 
+	if (this.agentStatus == NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE
+		&& this.partThatLaneGave.equals(this.partThatLastSettled))
+		this.agentStatus = NestActionState.FINISH_PURGE 
+
+Message called by the CameraAgentSystem when the nest needs to be dumped.
+public void msgDumpParts() 
+	this.agentStatus = NestActionState.DUMPING_PARTS  
+
+This inrements the integer of incoming lane parts
+public void msgPartComing()
+ 	pendingLaneParts.set(pendingLaneParts.get() + 1) 
+
+This is sent by the lane agent when the nest is on the final purge
+public void msgTheFinalPurge()
+	if (this.partThatLaneGave != null && this.partThatLastSettled != null)
+		if (this.partThatLaneGave.equals(this.partThatLastSettled))
+			this.agentStatus = NestActionState.FINISH_PURGE 
+		 
+		else
+			this.agentStatus = NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE 
+		 
+	public void msgNestNeedsMoreParts()
+	this.agentStatus = NestActionState.FIX_NEST 
+
+Sent from the Nest gui when it goes from full to not full
+public void msgIAmNoLongerFull()
+	//If I am not in any purge state 
+	if (this.agentStatus != NestActionState.PURGING_PARTS && this.agentStatus != NestActionState.FINISH_PURGE 
+			&& !firstPurge && this.agentStatus != NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE)
+		this.guiStatus = NestPossessionState.EMPTYING_TO_ROBOT 
+		cameraSystemAgent.msgIAmNoLongerFull(this) 
+
+Sent from the gui nest when it is empty
+public void msgIAmEmpty()
+	this.guiStatus = NestPossessionState.EMPTY 
+ 
+Message from the cell manager agent sending me the new kit configuration
+public void msgThisIsCurrentConfiguration(KitConfig k)
+	Initialize my partType (beginning of KittingCell)
+	
+	if (partType == null)
+		partType = k.getKitConfig().get(nestNum-1) 
+		cellManager.msgIAmProperlyConfigured(this) 
+
+	if (partType != k.getKitConfig().get(nestNum-1))
+		partType = k.getKitConfig().get(nestNum-1) 
+		this.agentStatus = NestActionState.PURGING_PARTS 
+		firstPurge = true 
+	
+	else
+		cellManager.msgIAmProperlyConfigured(this) 
+	
+//SCHEDULER:
+
+public boolean pickAndExecuteAnAction() 	
+	if (this.agentStatus == NestActionState.CHECKING)
+	 
+		areYouReadyToReceive() 
+		return true 
+	 
+	if (this.agentStatus == NestActionState.RECEIVING_PART)
+	 
+		receivePart() 
+		return true 
+	 
+	if (this.agentStatus == NestActionState.DUMPING_PARTS)
+	 
+		dumpParts() 
+		return true 
+	 
+	if (this.guiStatus == NestPossessionState.EMPTY	&& this.agentStatus == NestActionState.FINISH_PURGE
+		&& pendingLaneParts.get() == 0)
+	 
+		theFinalPurgeCompleted() 
+		return true 
+	 
+	
+	if (this.agentStatus == NestActionState.FIX_NEST)
+	 
+		fixNest() 
+		return true 
+	 
+	
+	if ((firstPurge && guiStatus != NestPossessionState.FULL && pendingLaneParts.get() == 0)
+			|| (firstPurge && (guiStatus == NestPossessionState.FULL || this.guiStatus == NestPossessionState.EMPTYING_TO_ROBOT))
+			|| (this.agentStatus == NestActionState.PURGING_PARTS && (this.guiStatus == NestPossessionState.FULL || this.guiStatus == NestPossessionState.EMPTYING_TO_ROBOT)) 
+			|| (this.agentStatus == NestActionState.FINISH_PURGE && pendingLaneParts.get() == 0)
+		)
+	 
+		if (firstPurge)
+		 
+			firstPurge = false 
+		 
+		purgeParts() 
+		return true 
+
+ 
+
+//ACTIONS:
+
+private void areYouReadyToReceive()
+ 
+	if (this.guiStatus == NestPossessionState.EMPTY)
+	 
+		print("Asking if ready for a part / guiStatus is empty.") 
+		this.guiStatus = NestPossessionState.FILLING 
+		this.agentStatus = NestActionState.NONE 
+		laneAgent.msgReadyToReceive() 
+		pendingLaneRequest = false 
+	 
+	else if (this.guiStatus == NestPossessionState.FILLING)
+	 
+		print("Asking if ready for a part / guiStatus is Filling") 
+		if (laneAgent != null)
+		 
+			laneAgent.msgReadyToReceive() 
+			this.agentStatus = NestActionState.NONE 
+			pendingLaneRequest = false 
+		 
+	 
+	else if (this.guiStatus == NestPossessionState.FULL)
+	 
+		print("Asking if ready for a part / guiStatus is full") 
+		this.agentStatus = NestActionState.NONE 
+		if (this.agentStatus != NestActionState.PURGING_PARTS && this.agentStatus != NestActionState.FINISH_PURGE && !firstPurge
+				&& this.agentStatus != NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE)
+		 
+			cameraSystemAgent.msgIAmFull(this, myParts) 
+			laneAgent.msgIAmFull() 
+		 
+	 
+	else if (this.guiStatus == NestPossessionState.EMPTYING_TO_ROBOT)
+	 
+		print("Asking if ready for a part / guiStatus is emptying to robot and cannot give to lane") 
+		this.agentStatus = NestActionState.NONE 
+		laneAgent.msgIAmFull() 
+	 
+	else
+	 
+		print("Condition unmet in areYouReadyToReceive(). State = " + this.guiStatus) 
+	 
+ 
+private void dumpParts()
+ 
+	print("Dumping parts") 
+	myGuiNest.dumpParts() 
+	this.agentStatus = NestActionState.IDLE 
+	this.guiStatus = NestPossessionState.EMPTY 
+ 
+private void purgeParts()
+ 
+	if (counter < 1)
+	 
+		counter++ 
+		return 
+	 
+	else
+	 
+		counter = 0 
+		print("Purging parts  -  pendingLaneParts == " + pendingLaneParts.get()) 
+		myGuiNest.dumpParts() 
+		if (pendingLaneRequest)
+		 
+			print("LANE REQUEST FULFILLED") 
+			laneAgent.msgReadyToReceive() 
+			pendingLaneRequest = false 
+		 
+	 
+ 
+private void theFinalPurgeCompleted()
+	
+	print("I AM ON THE FINAL PURGE") 
+
+	if (pendingLaneRequest)
+	 
+		laneAgent.msgReadyToReceive() 
+		pendingLaneRequest = false 
+	 
+
+	if (counter < 1)
+	 
+		counter++ 
+		return 
+	 
+	else
+	 
+		myGuiNest.dumpParts() 
+	 
+	this.agentStatus = NestActionState.NONE 
+	
+	cellManager.msgIAmProperlyConfigured(this) 	
+ 
+private void receivePart()
+ 
+	print("Receiving part") 
+	
+	if (this.guiStatus == NestPossessionState.EMPTY)
+	 
+		this.guiStatus = NestPossessionState.FILLING 
+	 
+	if (this.agentStatus != NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE)
+	 
+		this.agentStatus = NestActionState.NONE 
+	 
+	/*
+	if (this.agentStatus == NestActionState.WAITING_FOR_SETTLEMENT_BEFORE_PURGE)
+	 
+		this.agentStatus = NestActionState.FINISH_PURGE 
+	 
+	*/
+ 
+private void fixNest()
+ 
+	myGuiNest.changeNormativeNormal() 
+	this.agentStatus = NestActionState.NONE 
+	this.guiStatus = NestPossessionState.FILLING 
+ 
+

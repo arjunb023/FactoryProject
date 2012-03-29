@@ -1,0 +1,64 @@
+Please read the HOWTO_v1.txt document to see the functions of the kitting cell.
+This document will detail who did what in this project.
+
+> 200
+	Reetika Rastogi
+		Cart system GUI (src.gui.components.GUICart)
+		Kitting stand (src.gui.components.GUIKitStand)
+		Panels (src.main.*Panel)
+		Some help in panels
+	Navya Prakash
+		Camera GUI (src.gui.components.GUICamera)
+	Tanya Huang
+		Gantry GUI (src.gui.components.GUIGantry)
+		KitStand Graphic
+		Graphics Editing
+		Some help in panels
+	Arjun Bhargava
+		Nest GUI (src.gui.components.GUINest)
+		Lane GUI (src.gui.components.GUILane)
+		Some help with Camera and Parts
+	Carina Prynn
+		Parts (src.shared.Part)
+		Kits (src.shared.GUIKit)
+		Panels (src.main.*Panel)
+		help with panel formatting
+	Michael Gendotti
+		Diverter GUI (src.gui.components.GUIDiverter)
+		Feeder GUI (src.gui.components.GUIFeeder)
+		Gantry GUI (src.gui.components.GUIGantry)
+	Jessica Yoshimi
+		Images (all of images folder)
+		Panels (src.main.*Panel)
+		KittingCell Main
+		Some work on all robots
+	Andrew Heidersheit
+		Parts Robot GUI (src.gui.components.GUIPartsRobot)
+		Panels (src.main.*Panel)
+		Factory Floor (src.gui.components.GUIFactoryFloor)
+	Ralf Cheung
+		Kitting robot GUI (src.gui.components.GUIKitRobot)
+		Panels (src.main.*Panel)
+> 201
+	Elias Shanaa
+		Nest Agent (src.factory.NestAgent)
+		Camera Agent (src.factory.CameraSystemAgent)
+	Duke Yin
+		Diverter Agent (src.factory.DiverterAgent)
+ 		Lane Agent (src.factory.LaneAgent)
+ 		Identified race conditions in Feeder Agent (let Jai fix)
+ 		Identified and fixed several race conditions in Nest Agent / GUI Nest
+		Help on most agents
+		Help on some GUIs
+		Most of TracePanel
+		Most of StatesPanel
+		Lots of debugging (speeding up GUI animations, helpful prints/paneling)
+	Ryan McGee
+		Parts Robot Agent (src.factory.PartsRobotAgent)
+		Cell Manager Agent
+	Jerry Zhou
+		Kitting robot agent (src.factory.KitRobotAgent)
+		Cart agent (src.factory.CartAgent)
+	Jai Bapna
+		Gantry Agent (src.factory.GantryAgent)
+ 		Feeder Agent (src.factory.FeederAgent)

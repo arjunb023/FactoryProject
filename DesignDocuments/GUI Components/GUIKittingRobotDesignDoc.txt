@@ -1,0 +1,376 @@
+GUIKittingRobot
+
+	enum states {
+		MOVE_TO_STAND, MOVE_TO_INSPECTION, MOVE_TO_CART, MOVE_TO_DUMP, MOVE_FROM_INSPECTION, IDLE
+	}
+	enum MTS {
+		MOVE_TO_CART, PICKUP, MOVE_TO_STAND, DROPOFF, IDLE
+	}
+	enum MTI {
+		MOVE_TO_STAND, PICKUP, MOVE_TO_INSPECTION, DROPOFF, IDLE
+	}
+	enum MTC {
+		MOVE_TO_INSPECTION, PICKUP, MOVE_TO_CART, DROPOFF, IDLE
+	}
+	enum MTD{ //move to dump
+		MOVE_TO_INSPECTION, PICKUP, MOVE_TO_DUMP, DROPOFF, IDLE
+	}
+	enum MFI{//move from inspection
+		MOVE_TO_INSPECTION, PICKUP, MOVE_TO_STAND, DROPOFF, IDLE
+	}
+	states myState;
+	MTS mtsState;
+	MTI mtiState;
+	MTC mtcState;
+	MTD mtdState;
+	MFI mfiState;
+	KitRobot agent;
+	GUIKitStand kitStand;
+	GUIKit myKit;
+	GUICart myCart;
+	public int xpos = 100;
+	public int ypos = 100;
+	int theta = 0;
+	int armAngle = 0;
+	int tempAngle = 0;
+	int dumpX, dumpY;
+	int zoom = 0;
+	int inspectionX, inspectionY;
+	int cartX, cartY, cartW, cartH;
+	int standX, standY, standNumber;
+	static final int KITHEIGHT = 60;
+	boolean hasKit;
+	// Create ImageIcons
+	ImageIcon arm = new ImageIcon("images/ab_kit_robot_arm.png");
+	ImageIcon base = new ImageIcon("images/ab_kit_robot_base.png");
+	ImageIcon claw = new ImageIcon("images/ab_kit_robot_claw.png");
+	ImageIcon armBase = new ImageIcon("images/ab_kit_robot_armBase.png");
+	public int armX = xpos + getBaseWidth()/2;
+	public int armY = ypos + getBaseHeight()/2 - getArmWidth()/2;	
+	int destinationX, destinationY;	
+	int finalDistance = 0;		// Changed initial arm length to 0
+	int armLength = 0;
+	boolean clockwise, counterclockwise;
+
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current x position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current y position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		rotateArm
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Calculate the rotation angle of the kit robot arm
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		calculateDistance
+	Formal Parameters:
+		int xdest, int ydest
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		calculate the distance from current position to destination
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		stretchArm
+	Formal Parameters:
+		int
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Calculate the stretching distance of the kit robot arm from current point to destination after rotation
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		setDestinationX
+	Formal Parameters:
+		int
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		set the x-coordinate of the destination
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		setDestinationY
+	Formal Parameters:
+		int
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		set the y-coordinate of the destination
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		setEndTheta
+	Formal Parameters:
+		int, int
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		set rotation angle
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		update
+	Formal Parameters:
+		void
+	Return Type
+		void
+	Method Description:
+		update the condition of the kit robot
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		setKitRobotAgent
+	Formal Parameters:
+		KitRobot
+	Return Type
+		void	
+	Method Description:
+		set the kitrobot agent
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		setKitStand
+	Formal Parameters:
+		GUIKitStand
+	Return Type
+		void		
+	Method Description:
+		set the guikitstand
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		DoMoveFromInsepctionToStand
+	Formal Parameters:
+		int
+	Return Type:
+		void
+	Method Description:
+		set the conditions for moving kit robot from inspection to kit stand
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		DoMoveToStand
+	Formal Parameters:
+		int, GUICart
+	Return Type:
+		void
+	Method Description:
+		set the conditions for moving kit robot to kit stand
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		DoMoveToInspection
+	Formal Parameters:
+		int
+	Return Type:
+		void
+	Method Description:
+		set the conditions for moving kit robot to inspection
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		DoMoveToCart
+	Formal Parameters:
+		GUICart
+	Return Type:
+		void
+	Method Description:
+		set the conditions for moving kit robot to cart
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		draw
+	Formal Parameters:
+		Graphics
+	Return Type:
+		void
+	Method Description:
+		draw the updated animations
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+	Method Name:
+		DoDump
+	Formal Parameters:
+		void
+	Return Type:
+		void
+	Method Description:
+		set the conditions for dumping a kit
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None	
+		
+	String getName(): get the class name
+	getWidth(): get the base width
+	getHeight(): get the base height
+	setX(int): set the x-coordinate
+	setY(int): set the y-coordinate
+	getX(): get the x-coordinate
+	getY(): get the y-coordinate
+	getCenterX(): get the x-coordinate of the center of the base
+	getCenterY(): get the y-coordinate of the center of the base
+	getArmLength(): get the length of the robot arm
+	getArmWidth(): get the width of the robot arm
+	getClawWidth(): get the width of the claw
+	getClawHeight(): get the height of the claw
+	getArmBaseWidth(): get the width of the arm base
+	getArmBaseHeight(): get the height of the arm base
+	getClawX(): get the x-coordinate of the claw
+	getClawY(): get the y-coordinate of the claw

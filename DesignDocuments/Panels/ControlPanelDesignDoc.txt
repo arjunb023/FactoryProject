@@ -1,0 +1,46 @@
+ControlPanel Class:
+	Instance Variables:
+		JTabbedPane pane
+		JButton startStopButton
+		KittingCell myKittingCell
+		FactoryPanel myFactory
+		OrderPanel myOrderPanel
+		DisasterPanel myDisasterPanel
+		
+	Method Name:
+		actionPerformed
+	Formal Parameters:
+		ActionEvent e
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Sets the action to be taken when an action is performed by the user.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getOrderPanel
+	Formal Parameters:
+		void
+	Formal Type:
+		public
+	Return Type:
+		OrderPanel
+	Method Description:
+		Returns the OrderPanel.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None

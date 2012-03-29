@@ -1,0 +1,420 @@
+/**
+ * @author Jai Bapna
+ */
+
+public class FeederAgent extends Agent implements Feeder {
+
+	/** Data */
+	public enum FeederState {
+		ACTIVE, GUI_AWAITING_BIN_PLACEMENT, GUI_BIN_BEING_PLACED, PURGE, GUI_PURGING, GUI_DONE_PURGING, GANTRY_PURGING
+	};
+
+	public enum PartState {
+		NO_ACTION, AWAITING_DIVERTER_PERMISSION, READY_FOR_DIVERTER, GUI_DELIEVERING_PART, GUI_DELIVERED_PART, DELIVERED
+	};
+
+	public enum RequestState {
+		PURGE, DONE_PURGING, FULFILL, FULFILLED
+	}
+
+	private List<MyPart> myParts = Collections
+			.synchronizedList(new ArrayList<MyPart>());
+
+	/** the previous partType which was sent to the diverter */
+	PartType previousType = null;
+
+	private List<LaneRequest> laneRequests = Collections
+			.synchronizedList(new ArrayList<LaneRequest>());
+
+	public MyBin myBin;
+
+	public Diverter diverter;
+
+	public Gantry gantry;
+
+	private int feederNumber;
+
+	private GUIFeeder guiFeeder;
+
+	public FeederState feederState = FeederState.ACTIVE;
+
+	private boolean firstRequest = true;
+	
+	// Timer for simulation
+	Timer timer = new Timer();
+
+	private KitConfig currentConfig;
+
+	CellManagerAgent manager;
+	
+	PartType currentPartType1, currentPartType2;
+
+	/**
+	 * Private class that represents a Feeder Part. Contains the name of the bin
+	 * along with the bin state.
+	 */
+	private class MyPart {
+		public PartState state;
+		public Part part;
+	}
+
+	private class LaneRequest {
+		public Lane lane;
+		public PartType type;
+		public RequestState state;
+	}
+
+	private class MyBin {
+		public Bin bin;
+		public boolean markedForPurge = false;
+	}
+
+	/** Messages */
+
+	public void msgHereIsBin(Bin bin) {
+		print("Received bin " + bin.getPartType() + "from Gantry Robot.");
+		this.myBin = new MyBin(bin);
+		feederState = FeederState.GUI_AWAITING_BIN_PLACEMENT;
+		stateChanged();
+	}
+
+	public void msgDonePlacingBin(GUIBin bin) {
+		print("Received msgDonePlacingBin from guiFeeder");
+		for (Part part : this.myBin.bin.getParts()) {
+			myParts.add(new MyPart(part));
+		}
+		feederState = FeederState.ACTIVE;
+		stateChanged();
+	}
+
+	public void msgGantryDonePurging() {
+		print("Received msgGantryDonePurging from Gantry Agent");
+		feederState = FeederState.ACTIVE;
+		synchronized (laneRequests) {
+			for (LaneRequest request : laneRequests) {
+				if (request.state == RequestState.DONE_PURGING) {
+					request.state = RequestState.FULFILL;
+				}
+			}
+		}
+		this.myBin = null;
+		stateChanged();
+	}
+
+	@Override
+	public void msgLaneNearCapacity() {
+		print("Marked to purge.");
+		feederState = FeederState.PURGE;
+		stateChanged();
+	}
+
+	@Override
+	public void msgSendMoreParts(Lane lane, PartType type) {
+		print("Lane wants more parts of type '" + type + "'");
+		if (firstRequest) {
+			laneRequests.add(new LaneRequest(lane, type, RequestState.FULFILL));
+			firstRequest = false;
+		} else {
+			laneRequests.add(new LaneRequest(lane, type));
+		}
+		stateChanged();
+	}
+
+	@Override
+	public void msgDiverterReadyToReceive(Part part) {
+		print("Diverter ready to receive part " + part.getName());
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				if (myPart.part.equals(part)) {
+					myPart.state = PartState.READY_FOR_DIVERTER;
+					stateChanged();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void msgGUIRemovedPartsFromFeeder() {
+		print("GUI Removed parts from Feeder to bin.");
+		feederState = FeederState.GUI_DONE_PURGING;
+		stateChanged();
+	}
+
+	public void msgThisIsCurrentConfiguration(KitConfig kitConfig) {
+		this.currentConfig = kitConfig;
+		currentPartType1 = this.currentConfig.kitConfig
+				.get(feederNumber * 2 - 2);
+		currentPartType2 = this.currentConfig.kitConfig
+				.get(feederNumber * 2 - 1);
+		
+		synchronized (laneRequests) {
+			for (LaneRequest request : laneRequests) {
+				if (request.type != currentPartType1 && request.type != currentPartType2) {
+					print("VOIDING a lane request for old partType " + request.type
+						+ ", expected Type1 " + currentPartType1 + ", Type2 " + currentPartType2);
+						request.state = RequestState.FULFILLED;
+				}
+			}
+		}
+		manager.msgIAmProperlyConfigured(this);
+		stateChanged();
+	}
+
+	/** FROM GUI **/
+	@Override
+	public void msgGUIPartDelivered(GUIPart part) {
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				if (myPart.state == PartState.GUI_DELIEVERING_PART) {
+					print("Received msgGUIPartDelivered from "
+							+ guiFeeder.getName() + " for part "
+							+ myPart.part.type);
+					myPart.state = PartState.GUI_DELIVERED_PART;
+					stateChanged();
+				}
+			}
+		}
+	}
+
+	/** Scheduler */
+	public boolean pickAndExecuteAnAction() {
+		this.setCurrentState(myParts.size() + " part(s)");
+		this.setCurrentState1(this.feederState.toString());
+		synchronized(laneRequests)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (LaneRequest r : laneRequests)
+			{
+				sb.append(r.lane.getName().substring(r.lane.getName().length()-1) + "," + r.type + "," + r.state + "  ");
+			}
+			this.setCurrentState2(sb.toString());
+		}
+		
+		
+		if (feederState == FeederState.GUI_DONE_PURGING) {
+			PurgeParts();
+			return true;
+		}
+		if (feederState == FeederState.PURGE) {
+			GUIPurgeParts();
+			return true;
+		}
+		if (feederState == FeederState.GUI_AWAITING_BIN_PLACEMENT) {
+			GUIAcceptBin();
+			return true;
+		}
+
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				if (myPart.state == PartState.DELIVERED) {
+					RemovePart(myPart);
+					return true;
+				}
+			}
+		}
+
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				if (myPart.state == PartState.GUI_DELIVERED_PART) {
+					SendPartToDiverter(myPart);
+					return true;
+				}
+			}
+		}
+
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				if (myPart.state == PartState.READY_FOR_DIVERTER) {
+					GUISendPartToDiverter(myPart);
+					return true;
+				}
+			}
+		}
+
+		synchronized (myParts) {
+			boolean ok = true;
+			for (MyPart myPart : myParts) {
+				if (myPart.state == PartState.AWAITING_DIVERTER_PERMISSION) {
+					ok = false;
+					break;
+				}
+			}
+			if (ok) {
+				for (MyPart myPart : myParts) {
+					if (myPart.state == PartState.NO_ACTION) {
+						GetDiverterPermission(myPart);
+						return true;
+					}
+				}
+			}
+		}
+
+		if (myParts.isEmpty() && feederState == FeederState.ACTIVE) {
+			synchronized (laneRequests) {
+				for (LaneRequest request : laneRequests) {
+						
+					if (request.state == RequestState.FULFILLED) {
+						RemoveLaneRequest(request);
+						return true;
+					}
+					
+					if (request.state == RequestState.PURGE) {
+						if (myBin!=null) {
+							SendPurgeMessage(request);
+							return true;
+						}
+					} 
+					
+					if (request.state == RequestState.FULFILL) {
+						RequestBin(request);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/** Actions */
+
+	public void RemoveLaneRequest(LaneRequest request) {
+		laneRequests.remove(request);
+		print("Removed LaneRequest of " + request.type + " for lane " + request.lane.getName());
+	}
+	
+	public void GUIAcceptBin() {
+		print("GUIAcceptNewBin");
+		guiFeeder.msgAcceptBin(this.myBin.bin.guiBin);
+		feederState = FeederState.GUI_BIN_BEING_PLACED;
+	}
+
+	public void SendPurgeMessage(LaneRequest request) {
+		if (firstRequest) {
+			request.state = RequestState.FULFILL;
+		} else {
+			if (!myBin.markedForPurge) {
+				print("Marked to purge.");
+				setCurrentState("Purging bin type " + myBin.bin.getPartType());
+				feederState = FeederState.PURGE;
+				myBin.markedForPurge = true;
+			}
+			request.state = RequestState.DONE_PURGING;
+		}
+		stateChanged();
+	}
+
+	public void RequestBin(LaneRequest request) {
+		print("RequestBin of " + request.type + " for lane " + request.lane.getName());
+		gantry.msgGiveMeThisPart(request.type, this);
+		request.state = RequestState.FULFILLED;
+		feederState = FeederState.ACTIVE;
+		stateChanged();
+	}
+
+	public void PurgeParts() {
+		print("PurgeParts");
+		myParts.clear();
+		gantry.msgPurgeThisBin(this.myBin.bin);
+		setCurrentState("Telling Gantry to purge bin " + myBin.bin.getPartType());
+		feederState = FeederState.GANTRY_PURGING;
+		stateChanged();
+	}
+
+	public void GUIPurgeParts() {
+		print("GUIPurgeParts");
+		ArrayList<GUIPart> guiParts = new ArrayList<GUIPart>();
+		synchronized (myParts) {
+			for (MyPart myPart : myParts) {
+				guiParts.add(myPart.part.guiPart);
+			}
+		}
+		guiFeeder.msgEmptyPartsForBin(this.myBin.bin.guiBin, guiParts);
+		feederState = FeederState.GUI_PURGING;
+	}
+	
+	
+	/**
+	 * if both current Part Types are the same, this needs to be checked to flip diverter
+	 */
+	int oneCycleFedCounter = 0;
+	
+	public void GetDiverterPermission(MyPart myPart)
+	{
+		print("GetDiverterPermission");
+		myPart.state = PartState.AWAITING_DIVERTER_PERMISSION;
+
+		if (currentPartType1 != currentPartType2) {
+			if (myPart.part.type==currentPartType1) {
+				if (diverter.getOrientation() != DiverterDirection.TOP)
+					diverter.msgFlipDiverterOrientation();
+			} else if (myPart.part.type==currentPartType2) {
+				if (diverter.getOrientation() != DiverterDirection.BOTTOM)
+					diverter.msgFlipDiverterOrientation();
+			} else {
+				this.msgLaneNearCapacity();
+			}
+		} else {
+			oneCycleFedCounter++;
+			if (oneCycleFedCounter > Bin.NUM_PARTS) {
+				oneCycleFedCounter = 1;
+				diverter.msgFlipDiverterOrientation();
+			}
+		}
+		
+		diverter.msgPartReady(myPart.part);
+	}
+
+	public void GUISendPartToDiverter(MyPart myPart) {
+		print("GUISendPartToDiverter " + myPart.part.getName());
+		myPart.state = PartState.GUI_DELIEVERING_PART;
+		guiFeeder.msgShuttlePart(myPart.part.guiPart);
+	}
+
+	public void SendPartToDiverter(MyPart myPart) {
+		print("Handing part " + myPart.part.getName() + " to Diverter");
+		diverter.msgHereIsPart(myPart.part);
+		myPart.state = PartState.DELIVERED;
+	}
+
+	public void RemovePart(MyPart myPart) {
+		print("RemovePart " + myPart.part.getName());
+		myParts.remove(myPart);
+	}
+
+	/** EXTRA -- all the simulation routines */
+
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setGUIFeeder(GUIFeeder guiFeeder) {
+		this.guiFeeder = guiFeeder;
+	}
+
+	public void setDiverterAgent(Diverter diverter) {
+		this.diverter = diverter;
+	}
+
+	public void setGantryAgent(Gantry gantry) {
+		this.gantry = gantry;
+	}
+
+	public void setCellManagerAgent(CellManagerAgent manager) {
+		this.manager = manager;
+	}
+
+	@Override
+	public GUIFeeder getGUIFeeder() {
+		return this.guiFeeder;
+	}
+	
+	@Override
+	public boolean HasBin() {
+		if (this.myBin != null)
+			return true;
+		else
+			return false;
+	}
+
+}

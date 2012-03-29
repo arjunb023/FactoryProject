@@ -1,0 +1,14 @@
+KitConfig:
+
+System Name
+	KitConfig
+System Description
+	The Kit Config determines which part should be in which lane. This is the information used by the diverter to determine in which lane to place a part.
+Requirements
+	Kit Config should store information regarding which lane to place a part in, and give this information to various agents.
+
+	Class Description
+		ArrayList <Part> kitConfig
+
+	getConfig()
+	returns kitConfig

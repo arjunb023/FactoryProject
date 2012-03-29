@@ -1,0 +1,128 @@
+KitRobot:
+Data
+/***********Gui************************************************/
+	KitRobotGui myKitRobotGui //an instance of gui kit robot
+	KitStandGui myKitStandGui //an instance of gui kit stand
+/***********Agent**********************************************/
+	ArrayList<Cart> cartAgents = new ArrayList<Cart>();
+	// remove comment when KitOrder is finished
+	public List<KitOrder> kitOrders = Collections.synchronizedList(new ArrayList<KitOrder>());
+	public List<CartState> cartStates = Collections.synchronizedList(new ArrayList<CartState>());
+	public List<Integer> orders = Collections.synchronizedList(new ArrayList<Integer>());
+	CameraAgent myCameraAgent //an instance of camera system agent 
+/***********Private Data***************************************/
+	enum KitState {
+		NONE, MOVING, FETCHING, POSITIONED, PROCESSING, FULL, INSPECTING, MISSING,GOOD, BAD, GIVING, DUMPING
+	}
+
+	enum KitOrderState {
+		EMPTY, PROCESSING, FULL
+	}
+
+	enum CartStatus {
+		NONE, WORKING, WAITING, LEAVING, GONE
+	}
+
+	enum GuiState {
+		IDLE, WORKING
+	}
+
+private class myKit{
+KitState state;
+myKit(){
+state = KitState.NONE;
+}
+}
+ArrayList myKits; //Three elements at most 
+	private class CartState {
+		private Cart cartAgent;
+		private CartStatus cState;
+		private int spot;
+
+		CartState(Cart cartAgent, CartStatus cS) {
+			this.cartAgent = cartAgent;
+			this.cState = cS;
+		}
+	}
+
+Messages
+void msgIHaveABlankKit{
+if(myKits.size() < 3)
+myCartAgent.msgPleaseGiveMeOne();
+}
+
+void msgHereIsABlankKit(){
+myKits.add(new myKit());
+}
+void msgFinishedMovingToStand(int number)
+{ 
+myKits.get(number).state = KitState.POSITIONED;
+}
+void msgHereIsAFullKit(int number){
+myKits.get(number).state = KitState.FULL;
+}
+
+void msgFinishedMovingToInspection(){
+if there exists a myKit in myKits such that myKit.location == 0
+tell camera to take the picture
+}
+void msgInspectionGood(){
+myKits.get(0).state = KitState.GOOD;
+}
+
+void msgInspectionBad(){
+myKits.get(0).state = KitState.BAD;
+} 
+
+void msgMissingParts(ArrayList<PartType> missingParts){
+if there exists a myKit in myKits such that mykit.state == KitState.INSPECTING)
+ mykit.state = KitState.MISSING;
+for(int i  = 0 ; i < missingParts.size(); i ++){
+	mykit.missingParts.add(missingParts.get(i));
+}
+mykit.missingOrder.setKitOrder(mykit.missingParts);
+}
+public void msgFinishedMovingBackToStand(int location){
+if there exists a myKit in myKits such that myKit.location == location
+partsRobotAgent.msgHereIsANewKitOrderToFill(mk.missingOrder, mk.location);
+}
+void msgBackToCart(){
+remove the kit which state is previously KitState.GIVING;
+}
+
+void msgDoneDump(){
+remove the kti which state is previously KitState.DUMPING;
+}
+
+void msgIHaveLeft(Cart cartAgent){
+if there exists a CartState ct in cartStates such that ct.cartAgent.equals(cartAgent)
+ct.cState = CartStatus.NONE;
+}
+
+
+Scheduler
+for kits in myKits
+if there exists a kit such that kit.state = State.NONE
+DoMoveToStand();
+if there exists a kit such that kit.state = State.POSITIONED
+TellPartsRobot();
+if there exists a kit such that kit.state = State.FULL
+DoMoveToInspection();
+if there exists a kit such that kit.state = State.MISSING
+DoMoveBackToStand(locate);
+if there exists a kit such that kit.state = State.GOOD
+DoMoveToCart();
+if there exists a kit such that kit.state = State.BAD
+DoDump();
+if there exists a CartState cstate in cartStates such that cstate.cState == CartStatus.NONE
+cstate.cartAgent.msgHereIsANewOrder();
+
+return;
+
+Actions
+DoMoveBackToStand(int locate); //tell Gui to fetch the kit from inspection then move it back to stand
+DoMoveToStand(); //Tell Gui to Fetch the Kit and Move it to Stand
+DoMoveToInspection(); //Tell Gui to Move it to Inspection and tell camera to inspect
+DoMoveToCart(); //Tell Gui to Move it to Cart
+DoDump(); //Tell Gui to Dump the Part 
+TellPartsRobot(); //Tell Parts Robot Agent that there is a kit to be worked on

@@ -1,0 +1,41 @@
+How to run our V.1 Factory
+
+Start Button:
+This starts all the agents and commences production of orders in queue.
+If user presses it again, the factory pauses.
+
+Panels:
+
+Kits Panel
+This panel use for kit order creation. You will see three separated parts:
+ The first one is "Premade Kit Order" which allows selection of a pre-made order, 
+     or user can choose "NONE" to create his/her customized order.
+ The second one is Kit Creation which allows the creation of the customized kit order if you choose      
+     "NONE" for "Premade Kit Order". Kit customization is accomplished by selecting the type of the        
+     part you wish to add, entering the number of that part, then pressing the "Add Part(s)" button. 
+     The current customized order can be view in the table below. Also user can clear the        
+     current order by pressing the "Clear Current Parts" button.
+ The third one allows for the custom naming and quantity entry for the orders user have created          
+     which can be finalized by  selecting the "Submit Order" button.
+
+ Notice that user can always do this even when the factory is running, since the orders will queue up 
+     and they will be processed when the previous orders are completed.
+  
+Orders Panel
+ This panel contains a table which shows the current queue of orders, as well as completed           
+ amount/ordered amount and current status of each order entry.
+ 
+States Panel
+ This panel contains a table which shows states of every agent in factory.
+
+Trace Panel
+ This panel can show the messages and print status of various agents in the factory if you choose the check box of that agent.
+ 
+ 
+ 
+ 
+KNOWN PROBLEMS:
+- Random lists threw ConcurrentModificationException, or ArrayIndexOutOfBounds (on ArrayLists), due to non-threadsafe code.
+	Synchronized blocks were thrown around all list iterations, list peeking/getting, and list adding/removing that we found.
+- Gantry(?) sometimes breaks, i.e., it goes idle when it has things it should be doing.
+	Most likely a race condition, but we're not sure why.

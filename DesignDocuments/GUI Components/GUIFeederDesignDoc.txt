@@ -1,0 +1,190 @@
+Feeder Class:
+	Instance variables:  
+		private int xPos
+		private int yPos
+		private int width
+		private int height
+		private Part part
+		private ImageIcon image
+		private int stdWidth
+		private int stdHeight
+		private ImageIcon stdImage
+		private ArrayList<part> partList
+		private FeederAgent feederAgent
+		private String name
+
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the feeder’s x position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the feeder’s y position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getWidth
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the feeder’s width.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+Method Name:
+		getHeight
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the feeder’s height.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+		
+	Method Name:
+		msgShuttlePart
+	Formal Parameters:
+		GUIPart part
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the feeder pass the specified part to the diverter
+	Method Preconditions:
+		Must have a part
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		msgEmptyPartsForBin
+	Formal Parameters:
+		GUIBin bin
+		List parts
+	Formal Type:
+		public
+	Return Type:
+		Boolean
+	Method Description:
+		Makes the feeder empty the specified parts into the bin
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		getPartList
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		List partList
+	Method Description:
+		This returns the list of parts to whatever calls it.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getGUIName
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String name
+	Method Description:
+		Returns the feeder’s name to whatever calls it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		msgAcceptBin
+	Formal Parameters:
+		GUIBin bin
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Takes a bin into the feeder and then outputs it next to the feeder
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None

@@ -1,0 +1,40 @@
+These are the instructions for how to run our factory.
+
+Main file can be found in: src.main.KittingCell.java
+
+Start Button:
+This starts all the agents and commences production of orders in queue.
+If user presses it again, the factory pauses.
+
+Panels:
+
+Kits Panel
+This panel use for kit order creation. You will see three separated parts:
+	The first one is "Default Kit" which allows the user to select a default order or to create his/her own
+		customized order. To create a custom order, please select "NONE" in the drop-down menu.
+	 The second one is Kit Creation, which allows the user to create customized kit orders if you chose "NONE" in
+	 	the previous section. Kit customization is accomplished by selecting the type of the part you wish to add,
+	 	entering the number of that part, then pressing the "Add Part(s)" button. The current customized order can
+	 	be view in the table below. Also user can clear the current order by pressing the "Clear Current Parts" button.
+	 The third part allows for custom naming of the kits specified in the previous sections, as well as the number
+	 	of these kits you would like to be made. Please finalize your selection by clicking the "Submit Order" button.
+	 	This will add your order to the queue of kits to be created.
+	 
+	 The user can utilize this panel to create new kits and orders even when the factory is running. Orders will queue
+	 	up and be processed when previous orders have been completed.
+
+Orders Panel
+	This panel contains a table which shows the current queue of orders, as well as the complete amount/ordered amount and
+		current status of each order entry.
+
+States Panel
+	This panel contains a table that displays the states of every agent in the factory.
+
+Disasters Panel
+	This panel allows user to trigger various disasters in the factory. The disasters you can choose from include: (1) parts
+		robot misses kit, (2) explode parts, (3) camera shoots early, and (4) a surprise! For details on each of the non-normative
+		scenarios, please read DesignDocuments.Panels.DisasterPanelDesignDoc.txt.
+
+Trace Panel
+	This panel displays the messages and print statuses of various agents in the factory. You can decide which agents
+		you want to see messages for my checking the check box for that agent.

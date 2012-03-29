@@ -1,0 +1,341 @@
+Elias Shanaa
+6467756468
+
+The Camera System Agent is responsible for instructing all of the GUICameras.
+These are the four which belong to the eight nests, and the one at the inspection
+stand.
+
+
+DATA
+	
+PartsRobot		 		partsRobotAgent								// Reference to the parts robot agent
+KitRobot 				kitRobotAgent								// Reference to the kit robot agent
+CellManagerAgent		cellManager									// Reference to my cell manager agent
+GUICamera 				guiCamera1									// Reference to my gui camera by nests 1 and 2
+GUICamera 				guiCamera2									// Reference to my gui camera by nests 3 and 4
+GUICamera 				guiCamera3									// Reference to my gui camera by nests 5 and 6
+GUICamera 				guiCamera4									// Reference to my gui camera by nests 7 and 8
+GUICamera				guiKitCamera								// Reference to the gui camera by the kit
+KitOrder 				robotKitOrder								// Reference to the kit order for the kit robot picture
+ArrayList<PartType> 	missingParts = new ArrayList<PartType>()	// Reference to the list that the kit camera sends me of missing parts
+	
+CameraActionState enum, list of states that the inspection stand camera can
+be in.
+enum CameraActionState:	NONE,IDLE,TAKE_KIT_PICTURE,KIT_GOOD,KIT_BAD,KIT_MISSING
+
+CameraActionState state				// Local reference to my action state enum
+
+The nest action state is the enum which is the list of states that the nests can be in.
+enum NestActionState	NONE,IDLE,NEEDS_PICTURE,HAS_PICTURE,ANALYZED_FULL,DUMP_PARTS
+
+
+NestClass is a class which represents the entire interaction for two nests and a camera.
+public class NestClass
+ 
+	int nestNum1														// The nest number of the top nest
+	int nestNum2														// The nest number of the bottom nest
+	Nest nestAgent1														// Reference to the first nest agent
+	Nest nestAgent2														// Reference to the second nest agent
+	GUICamera guiCamera													// Reference to the GUICamera of the nests
+	PartType partType1													// Part type of the top nest
+	PartType partType2													// Part type of the second nest
+	ArrayList<GUIPart> partsNest1 = new ArrayList<GUIPart>()			// The list of parts contained in the first nest
+	ArrayList<GUIPart> partsNest2 = new ArrayList<GUIPart>()			// The list of parts contained in the second nest
+	ArrayList<PartQuality> qualityList1 = new ArrayList<PartQuality>()	// The quality list of the first nest
+	ArrayList<PartQuality> qualityList2 = new ArrayList<PartQuality>()	// The quality list of the first nest
+	NestActionState nestState1											// The NestActionState of the first nest
+	NestActionState nestState2											// The NestActionState of the second nest
+
+ArrayList of type NestClass with the four nest interactions
+ArrayList<NestClass> nests = new ArrayList<NestClass>() 
+
+//SETTER METHODS:
+
+Two nests are set at a time. This must be set first! Example: 
+camera.setNests(1, nest1, nest2) 
+camera.setNests(2, nest3, nest4) 
+etc.
+public void setNests(int num, Nest n1, Nest n2)
+
+
+Setter for the cell manager agent
+public void setCellManagerAgent(CellManagerAgent ca)
+
+Link to the GUICamera
+public void setCameraGui1(GUICamera c) 
+public void setCameraGui2(GUICamera c) 
+public void setCameraGui3(GUICamera c) 
+public void setCameraGui4(GUICamera c) 
+
+Setter for the kit camera gui
+public void setKitCamera(GUICamera c)
+
+Link to the KitRobotAgent
+public void setKitRobotAgent(KitRobot kr)
+
+Link to the PartsRobotAgent
+public void setPartsRobotAgent(PartsRobot pr)
+
+
+//GETTER METHODS:
+
+Returns the name 
+public String getName()
+
+Returns the state of the camera
+public CameraActionState getCameraState()
+
+//MESSAGES:
+
+The message IAmFull is sent from the nest when it is filled with parts. It passes its own reference and a list of
+the parts it has.
+public void msgIAmFull(Nest nest, ArrayList<GUIPart> parts)
+	for (NestClass nest : nests)
+	 
+		if (nest == nests.get(i).nestAgent1)
+		 
+			nests.get(i).partsNest1 = parts
+			nests.get(i).nestState1 = NestActionState.NEEDS_PICTURE
+		 
+		else if (nest == nests.get(i).nestAgent2)
+		 
+			nests.get(i).partsNest2 = parts
+			nests.get(i).nestState2 = NestActionState.NEEDS_PICTURE
+		 
+	 
+	
+This message is sent from the camera gui after it is finished analyzing the lists. The Camera Agent
+does a check to see if all of the parts in a list are bad. If they are, then it sends the appropriate nest 
+the dump parts message. Then it sends back two lists of PartQuality for each of the nests (1 and 2)
+public void msgHereIsNestList(ArrayList<PartQuality> list1, ArrayList<PartQuality> list2, GUICamera gc)
+	for (NestClass nest : nests)
+		if (gc == nests.get(i).guiCamera)
+			nests.get(i).qualityList1 = list1 
+			nests.get(i).qualityList2 = list2 
+			
+			// If all of the parts are bad, then instruct the nest to dump its parts
+			if (checkQualityList(list1))
+				nests.get(i).nestAgent1.msgDumpParts() 
+				nests.get(i).nestState1 = NestActionState.IDLE 
+			
+			else 
+				boolean missingPartsFound = false 
+				for (int j = 0  j < list1.size()  j++)
+					if (list1.get(j) == PartQuality.MISSING)
+						print("Nest is not full") 
+						nests.get(i).nestAgent1.msgNestNeedsMoreParts() 
+						missingPartsFound = true 
+						break 
+						
+				if (!missingPartsFound)
+					nests.get(i).nestState1 = NestActionState.HAS_PICTURE 
+				
+			// If all of the parts are bad, then instruct the nest to dump its parts
+			if (checkQualityList(list2))
+				nests.get(i).nestAgent2.msgDumpParts() 
+				nests.get(i).nestState2 = NestActionState.IDLE 
+			else
+				boolean missingPartsFound = false 
+				for (int j = 0  j < list2.size()  j++)
+					if (list2.get(j) == PartQuality.MISSING)
+						print("Nest is not full") 
+						nests.get(i).nestAgent2.msgNestNeedsMoreParts() 
+						missingPartsFound = true 
+						break 
+				
+				if (!missingPartsFound)
+					nests.get(i).nestState2 = NestActionState.HAS_PICTURE 
+				
+Private method which returns the boolean true if all of the members of the quality list are bad
+private boolean checkQualityList(ArrayList<PartQuality> qualityList)
+
+This message is called by the KitRobotAgent when the kit is ready to be analyzed by the camera
+public void msgTakeKitPicture(KitOrder k)
+	//Save kit order 
+	robotKitOrder = k 
+	this.state = CameraActionState.TAKE_KIT_PICTURE 
+	
+This message is sent by the camera gui after it is finished analyzing the kit. This message means the
+kit is good.
+public void msgKitIsGood()
+	this.state = CameraActionState.KIT_GOOD 
+
+
+Non-normative message from GUI
+public void msgKitHasMissingParts(ArrayList<PartType> p)
+
+
+Sent by Parts Robot Agent when the nest is has no more good parts
+public void msgDoneTakingGoodPartsFromNest(int num)
+	if (num == 1)
+		nests.get(0).nestState1 = NestActionState.DUMP_PARTS 
+	
+	else if (num == 2)
+		nests.get(0).nestState2 = NestActionState.DUMP_PARTS 
+	
+	else if (num == 3)
+		nests.get(1).nestState1 = NestActionState.DUMP_PARTS 
+	 
+	else if (num == 4)
+		nests.get(1).nestState2 = NestActionState.DUMP_PARTS 
+	 
+	else if (num == 5)
+		nests.get(2).nestState1 = NestActionState.DUMP_PARTS 
+	 
+	else if (num == 6)
+		nests.get(2).nestState2 = NestActionState.DUMP_PARTS 
+	 
+	else if (num == 7)
+		nests.get(3).nestState1 = NestActionState.DUMP_PARTS 
+	 
+	else if (num == 8)
+		nests.get(3).nestState2 = NestActionState.DUMP_PARTS 
+
+		
+This message is sent by the camera gui after it is finished analyzing the kit. This message means the
+kit is bad.
+public void msgKitIsBad()
+	this.state = CameraActionState.KIT_BAD 
+ 
+ 
+Message from the Nest agent sent when it goes from full to not full
+public void msgIAmNoLongerFull(Nest n)
+ 
+Message from the cell manager agent informing me that I have a new part type
+public void msgThisIsCurrentConfiguration(KitConfig k)
+
+	// Update configurations for each nest
+	nests.get(0).partType1 = k.kitConfig.get(0) 
+	nests.get(0).partType1 = k.kitConfig.get(1) 
+	nests.get(1).partType1 = k.kitConfig.get(2) 
+	nests.get(1).partType1 = k.kitConfig.get(3) 
+	nests.get(2).partType1 = k.kitConfig.get(4) 
+	nests.get(2).partType1 = k.kitConfig.get(5) 
+	nests.get(3).partType1 = k.kitConfig.get(6) 
+	nests.get(3).partType1 = k.kitConfig.get(7) 
+	
+	// Send guiCameras the updated kit configuration
+	for (NestClass i : nests)
+		nests.get(i).guiCamera.setPartTypeForNests(nests.get(i).partType1, nests.get(i).partType2) 
+
+	// Send back msgIAmProperlyConfigured()
+	cellManager.msgIAmProperlyConfigured(this) 
+ 
+//Scheduler
+
+// Loop through the nest list
+for (NestClass i : nests)
+	if (nests.get(i).nestState1 == NestActionState.IDLE && nests.get(i).nestState2 == NestActionState.IDLE)
+		// Tell the appropriate camera to go idle
+		goIdle(i) 
+		nests.get(i).nestState1 = NestActionState.NONE 
+		nests.get(i).nestState2 = NestActionState.NONE 
+	 
+	if ( (nests.get(i).nestState1 == NestActionState.NEEDS_PICTURE && nests.get(i).nestState2 == NestActionState.NEEDS_PICTURE)
+			|| (nests.get(i).nestState1 == NestActionState.NEEDS_PICTURE && nests.get(i).nestState2 == NestActionState.HAS_PICTURE)
+			|| (nests.get(i).nestState1 == NestActionState.HAS_PICTURE && nests.get(i).nestState2 == NestActionState.NEEDS_PICTURE))
+		// Tell the appropriate camera to take a picture
+		takeNestPicture(i) 
+		// Wait for the gui to return the quality lists
+		nests.get(i).nestState1 = NestActionState.NONE 
+		nests.get(i).nestState2 = NestActionState.NONE 
+		return true 
+	 
+	if (nests.get(i).nestState1 == NestActionState.DUMP_PARTS)
+		// Instruct the nest to dump its parts
+		dumpParts(i, 1) 
+		nests.get(i).nestState1 = NestActionState.IDLE 
+		return true 
+	 
+	if (nests.get(i).nestState2 == NestActionState.DUMP_PARTS)
+		dumpParts(i, 2) 
+		nests.get(i).nestState2 = NestActionState.IDLE 
+		return true 
+	 
+	if (nests.get(i).nestState1 == NestActionState.HAS_PICTURE && nests.get(i).nestState2 == NestActionState.HAS_PICTURE)
+		// Sends nest analysis to the parts robot
+		nestAnalysisComplete(i) 
+		return true 
+	 
+if (this.state == CameraActionState.TAKE_KIT_PICTURE)
+	takeKitPicture() 
+	this.state = CameraActionState.IDLE 
+	return true 
+ 
+if (this.state == CameraActionState.KIT_BAD)
+	giveKitStatus(false) 
+	this.state = CameraActionState.IDLE 
+	return true 
+ 
+if (this.state == CameraActionState.KIT_GOOD) 
+	giveKitStatus(true) 
+	this.state = CameraActionState.IDLE 
+	return true 
+ 
+if (this.state == CameraActionState.KIT_MISSING)
+	giveKitMissing() 
+	this.state = CameraActionState.IDLE 
+	return true 
+ 
+
+//Actions
+
+Tell the gui camera to go idle
+private void goIdle(int num)
+	nests.get(num).guiCamera.goIdle() 
+ 
+Tell the nest to take a picture
+private void takeNestPicture(int num)
+	nests.get(num).guiCamera.takeNestPicture(nests.get(num).partsNest1, nests.get(num).partsNest2) 
+	
+Nest analysis is complete, send the lists to the parts robot
+private void nestAnalysisComplete(int num)
+	if (num == 0)
+		partsRobotAgent.msgHereAreUpdatedNestContents(1, nests.get(num).qualityList1) 
+		partsRobotAgent.msgHereAreUpdatedNestContents(2, nests.get(num).qualityList2) 
+	 
+	else if (num == 1)
+		partsRobotAgent.msgHereAreUpdatedNestContents(3, nests.get(num).qualityList1) 
+		partsRobotAgent.msgHereAreUpdatedNestContents(4, nests.get(num).qualityList2) 
+	 
+	else if (num == 2)
+		partsRobotAgent.msgHereAreUpdatedNestContents(5, nests.get(num).qualityList1) 
+		partsRobotAgent.msgHereAreUpdatedNestContents(6, nests.get(num).qualityList2) 
+	 
+	else if (num == 3)
+		partsRobotAgent.msgHereAreUpdatedNestContents(7, nests.get(num).qualityList1) 
+		partsRobotAgent.msgHereAreUpdatedNestContents(8, nests.get(num).qualityList2) 
+	 
+	nests.get(num).nestState1 = NestActionState.ANALYZED_FULL 
+	nests.get(num).nestState2 = NestActionState.ANALYZED_FULL 
+ 
+Take the kit picture
+private void takeKitPicture()
+	guiKitCamera.takeKitPicture(robotKitOrder) 
+ 
+Give the kit status to the kit robot
+private void giveKitStatus(boolean kitIsGood)
+	if (kitIsGood)
+		setCurrentState("Kit Good") 
+		kitRobotAgent.msgKitIsGood() 
+	 
+	else
+		setCurrentState("Kit Bad") 
+		kitRobotAgent.msgKitIsBad() 
+	 
+	this.state = CameraActionState.IDLE 
+ 
+Tell the kit robot which parts are missing
+private void giveKitMissing()
+	kitRobotAgent.msgMissingParts(missingParts) 
+ 
+Tell the nest to dump it's parts
+private void dumpParts(int index, int num)
+	if (num == 1)
+		nests.get(index).nestAgent1.msgDumpParts() 
+	 
+	else
+		nests.get(index).nestAgent2.msgDumpParts() 
+	 
+ 
+ 

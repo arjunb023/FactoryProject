@@ -1,0 +1,18 @@
+System Name
+	KitOrder
+
+System Description
+	A kit order will hold the list of the parts that are needed to make a kit. This is the order that will
+be used in determining whether a kit is good or bad, which is done by the camera. The order of
+the parts does not actually matter, only the number of each part type that is in the kit.
+
+Requirements
+	The Kit Order should be able to store the parts needed to make a kit, which will be defined by
+the user. It simply holds a list of the parts that make up a kit.
+
+Class Description
+	ArrayList <PartType> kitOrder
+	getKitOrder()
+		returns kitOrder
+	setKitOrder (KitOrder myKitOrder)
+		sets the kit order to the array list given

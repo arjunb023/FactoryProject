@@ -1,0 +1,51 @@
+System Name
+	GUICamera
+System Description
+	Camera will take a picture of the nest/kit, and make sure that the nest or kit is “good”. A good part is defined by program, a good nest is any nest made up of good parts, a good kit is any kit made up of good parts, where the number of each part matches the number of that part in the kit order.
+Requirements
+	The camera should take a picture of the nest, and give the agent a list of all of the good parts in the nest which can be put into the kits by the parts robot. The kit camera should take a picture of the kit, and give the agent a message that the kit is good, or a list of the parts that are missing from the kit.
+
+Class Description
+	ArrayList <Part> myList
+	ArrayList <Part> nest1Parts
+	ArrayList <Part> nest2Parts
+	State myState
+	ArrayList <Integer> myList
+	ArrayList <PartQuality> qualityList
+	ArrayList <PartQuality> qualityList2
+	ArrayList <PartType> missingParts
+	ArrayList <KitPartsChecklist> myKitOrder
+	GUIKitStand myKitStand
+	CameraSystem agent
+	Boolean kitCamera, nestCamera
+	Position variables (xPos, yPos)
+	Int flashCounter
+	Int analysisCounter
+	Boolean badPartDetected
+	Boolean kitIsGood
+	KitConfig kitConfig1, kitConfig2
+	In Constructor:
+		Set kitPartChecklists
+	goIdle()
+		called by camera agent when camera is not being used
+	Set methods for all agents (Camera, KitStand)
+	analyzeKitPicture
+		check that all parts in kit are good
+		check against kit order and make sure there is correct number of each part
+		message agent either kitIsGood, or give agent list of missing parts 
+	takeKitPicture
+		set state to Flashing
+		clear kit order
+		set kitPartsChecklist to kit given
+	takeNestPicture
+		set state to Flashing
+		set nestLists to nests given by agent
+	analyzeNestPicture
+		iterate through all parts in nest, make sure all parts are good
+	update
+		update counters depending on state
+		call analyze function depending on kit or nest
+		set state to idle
+	draw
+		draws flash on screen
+	get and set methods for all variables

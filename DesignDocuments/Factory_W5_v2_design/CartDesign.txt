@@ -1,0 +1,69 @@
+Cart
+Data
+/***********Gui************************************************/
+CartGui myCartGui //an instance of gui kit robot
+/***********Agent**********************************************/
+KitRobotAgent myKitRobotAgent //an instance of kit robot agent 
+/***********Private Data***************************************/
+enum CartState {NONE,COMMING,WAITING,GOING}
+enum CartEvent {COME,STOP,GIVE,BACK,NONE}
+CartState cState;
+CartEvent cEvent;
+
+Message 
+void msgCartIsReady(){
+cEvent = CartEvent.STOP;
+}
+void msgPleaseGiveMeOne()
+{
+cEvent = CartEvent.GIVE;
+}
+void msgGivenOut(){
+cEvent = CartEvent.NONE;
+}
+void msgHereIsAFullKit()
+{
+cEvent = CartEvent.BACK;
+}
+
+Scheduler
+if(cState == NONE)
+if(cEvent == COME)
+{ 
+DoCome();
+cState == CartState.COMMING;
+}
+
+if(cState == CartState.COMMING)
+{ if(cEvent == CartEvent.STOP)
+{ cState = CartState.WAITING;
+myKitRobotAgent.msgIHaveABlankKit();
+}
+} 
+if(cState == CartState.WAITING)
+{
+if(cEvent == CartEvent.GIVE)
+{ cState = CartState.WAITING;
+myKitRobotAgent.msgHereIsABlankKit();
+}
+if(cEvent == CartEvent.BACK)
+{ cState = CartState.GOING;
+}
+if(cEvent == CartEvent.MOVE)
+{
+DoMove();
+return true;
+}
+} 
+if(cState == CartState.GOING)
+{if(cEvent == CartEvent.BACK)
+{
+DoGo();
+cEvent = NONE;
+}
+}
+
+Action
+DoCome() //Tell Gui to Come to a waiting position
+DoGo() //Tell Gui to Go
+DoMove() //Tell Gui to Move Forward an advanced point

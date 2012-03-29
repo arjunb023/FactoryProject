@@ -1,0 +1,16 @@
+We have implemented four non-normatives in our factory:
+
+(1) Parts Robot Misses Kit -
+		Parts robot breaks. It removes parts from nest correctly, but does not place them in kit.
+		This non-normative shows that the camera works for both complete and correct kits and incomplete and/or incorrect kits.
+(2) Explode Parts -
+		This non-normative detonates all the explosive devices in our factory. These include the black bomb birds and the TNT boxes.
+		After these two parts explode, ALL the parts currently in the factory become damaged (including the ones currently in the bins at the bottom of the screen).
+		Therefore, you must wait for all the parts currently in the factory to be purged from the nests and for the gantry to bring in bins with good parts in them.
+		In addition, because some parts were good when the camera took a picture in the nest, the parts robot will pick up the parts and place them in the kits.
+		The camera monitoring the kit stand between the parts robot and the kit robot will then inform the kit robot that the kit contains bad parts, and the kit will be thrown out.
+(3) Camera Shoots Early - 
+		The nest informs the camera that it is full too early, causing the camera to shoot too early.
+		The camera should realize that the nest is incomplete and/or contains bad parts, and inform the parts robot accordingly.
+(4) Surprise! -
+		We don't want to spoil the surprise, but we hope you enjoy it :)

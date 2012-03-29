@@ -1,0 +1,87 @@
+System Name
+	GUIPartsRobot
+System Description
+	Robot will take in a list of good parts from its agent, and go retrieve these parts. The robot will then wait for the agent to give it a kit to place parts in, and then perform this action.
+Requirements
+	Robot must be able to pick up parts based on instructions called by its agent. The robot must then move these parts to the specified kitStandLoc based on more instruction from its agent. Finally the robot must be able to move appropriately to execute these tasks, while updating the positions of the parts held in its hands.
+Class Description
+Member Data:
+	String name
+	int part1XPos,part2XPos,part3XPos,part4XPos
+	int part1YPos,part2YPos,part3YPos,part4YPos
+	GUIPart handOnePart, handTwoPart, handThreePart
+	GUIComponent getterComponent
+	PartsRobotAgent myAgent
+	GUINest nest1, nest2, nest3, nest4, nest5, nest6, nest7, nest8
+	GUIKitStand kitStand
+	GUIComponent factoryFloor;
+	Int xPos, yPos, xDest, yDest
+	Int rotationAngle
+
+	Methods:
+	setIdlePos(int xPos, int xPos)
+		sets the specified x and y position to be the new Idle Position for the robot
+	draw(Graphics g)
+		updates position of parts in hand through findPartPos()
+		rotates the canvas
+		draws each of the robots components
+		rotates the canvas back
+	getCenterX()
+		returns the s-center of the robot
+	getCenterY()
+		returns the y-center of the robot
+	findPartPos()
+		updates the position of each of the parts the robot is holding based on current x,y as well as rotation angle
+	update()
+		updates the holding position of the robot to prepare for drawing
+	getX()
+		returns the current x position of the robot
+	getY()
+		returns the current y position of the robot
+	rotate(int degrees)
+		rotates the robot the specified number of degrees
+		positive for clockwise
+		negative for counterclockwise
+		normalized for 360 degrees
+	getName()
+		returns the robot's name
+	setMyAgent(PartsRobotAgent myNewAgent)
+		sets the robot's controlling agent to the one passed
+	setNest(GUINest nest, int nestNumber)
+		sets the specified nest number to the reference passed
+	setKitStand(GUIKitStand kitStand)
+		sets the robot's kitStand to the one passed
+	setTheFloor(GUIFactoryFloor daFloor)
+		sets the robot's factoryFloor to the one passed
+	setX(int x)
+		sets the current xPosition of the robot
+	setY(int y)
+		sets the current yPosition of the robot
+	getWidth()
+		returns the width of the robot's body
+	getHeigth()
+		returns the heigth of the robot's body
+	In Constructor:
+		Create PartsRobotAgent
+	doPickUpPartsFromLanes(ArrayList<NestPosition> lanesToGrab)
+		determine most efficient order to gather parts based on current robot position
+		move robot to each nest, performing a getPart(GUIPart)
+		call msgDonePickUpFromLanes(List<GUIPart> partsInHand)
+	doPutPartsInKit(ArrayList<KitPartPutInstruction> daList)
+		move to specified kitting stand and perform a givePart(GUIPart) for each part being dropped off
+		call msgDonePutPartsInKit(int kitStandLoc, ArrayList<GUIPart> partsPutDown, ArrayList<GUIParts> partsInHand)
+	doDropTheseParts(ArrayList<GUIPart> toDrop)
+		deposits specified parts on the floor
+		call msgDoneDroppingParts(List<GUIPart> partsDropped)
+	doDropAllParts()
+		deposits all currently held parts on the floor
+		call msgDoneDroppingParts(List<GUIPart> partsDropped)
+	doGoIdle()
+		moves the robot to its idle position
+		call msgDoneGoingIdle()
+	doReset()
+		perform a doDropAllParts()
+		return to idlePosition
+		call msgDoneResetting()
+	fancyMove()
+		moves to the specified position, rotating along the way in order to get into the appropriate position and rotation angle simultaneously

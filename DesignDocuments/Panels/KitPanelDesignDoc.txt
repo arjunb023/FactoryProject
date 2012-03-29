@@ -1,0 +1,43 @@
+System Name
+	KitPanel
+System Description
+	The kit panel allows the user to select how many parts of each type they want in a kit, and create any number of that kit. They can then submit the order and the factory will create those kits.
+Requirements
+	The kit panel should allow the user to enter up to 8 parts in a kit, of any type they choose, and then display how many of each part they have entered. Then they should be allowed to name the kit they have created, enter how many of the kit they want, and submit the order to the factory, which is separate from actually starting the factory animation.
+
+Class Description
+	JTextField kitName, numKits, numParts
+	JButton addPartsToKit, submitOrder, clearCurrentParts
+	JComboBox partType, premadeKitList
+	JLabel typesLabel, numPartsLabel
+	String myKitName
+	Int myNumKits, myNumParts
+	ArrayList <PartType> typesOfParts, order
+	ArrayList <Integer> numPartsOfEachType
+	PartType myType
+	ArrayList<String> allKits
+	KittingCell myKittingCell
+	In Constructor:
+		Set size of panel
+		Add ActionListeners for all buttons, comboboxes, etc.
+		Set kitting cell
+		Set Factory animation panel
+		Set BorderLayout 
+		Create panels for each set of fields, add panels to main panel
+	actionPerformed
+		gets the part type selected in drop down menu, or premade kit if user selects that dropdown option
+		Add parts to list of parts
+		validate all inputs
+		Create the order when submit button is pressed, or clear all parts if clear button is pressed
+	getTypes
+		get types of parts added to list, display to user
+	createKitList
+		create new array list for order
+		add each part type given to the kit
+		return the order
+	getIndex
+		gets the index of the part
+	checkLimitReached
+		check that the number of parts given by user does not exceed the maximum number of the part type
+	checkMaxPartTypes
+		check that the number of parts in the kit does not exceed 8

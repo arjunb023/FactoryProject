@@ -1,0 +1,142 @@
+GUILane Class:
+	Instance variables:  
+		private Rectangle2D.Double lanePlaceholder;
+		public enum State {EMPTY, PARTIALLYFILLED, FULL, BAD, IDLE, LANE_MOVING, DUMPING_PARTS, GIVING_PART}
+		private State state;
+		private ArrayList<GUIPart> parts;
+		private ArrayList<MyPart> partsLane;
+		private int xPos;
+		private int yPos;
+		private int width;
+		private int height;
+		private int maxSize;
+		private String name;
+		private ImageIcon imageL;
+		private ImageIcon imageR;
+		private ImageIcon imageM;
+		private final int stdWidth = 50;
+		private final int stdHeight = 60;
+		private final ImageIcon stdImageL = new ImageIcon("images/lane_endL.png");
+		private final ImageIcon stdImageR = new ImageIcon("images/lane_endR.png");
+		private final ImageIcon stdImageM = new ImageIcon("images/lane_middle.png");
+		private Lane myAgent;
+		private int endX;
+		private int endY;
+		private GUINest nest;
+		private int fullNum;
+		private int speed;
+		private int shakeCounter;
+		private int shakeY;
+		private Rectangle2D.Double[] laneLines;
+		private final int almostFull = 10;
+		private final int almostEmpty = 1;
+		private boolean toldAgentItsFull;
+
+		
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current x position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the current y position of the part.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		ZoomIn
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the size of the part bigger by the specified amount.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+		
+	Method Name:
+		msgDoAddPart()
+	Formal Parameters:
+		GUIPart guipart
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		This adds a part to the lane
+	Method Preconditions:
+		None.
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+		
+	Method Name:
+		draw()
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		draws the lane
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None.
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+Getters and Setters:
+	setLaneAgent
+	getName
+	update
+	setNestNum
+	getState
+	getX
+	getY
+	getWidth
+	getHeight

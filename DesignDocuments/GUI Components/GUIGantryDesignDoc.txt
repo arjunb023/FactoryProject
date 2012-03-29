@@ -1,0 +1,373 @@
+Gantry Class:
+	Instance variables:  
+		private int xPos
+		private int yPos
+		private int width
+		private int height
+		private Part part
+		private ImageIcon image
+		private ImageIcon imageBroken
+		private ImageIcon imageLClaw
+		private ImageIcon imageRClaw
+		private int stdWidth
+		private int stdHeight
+		private ImageIcon stdImage
+		private ImageIcon stdLClaw
+		private ImageIcon stdRClaw
+		private ArrayList<part> partList
+		private GantryAgent gantryAgent
+		private int offScreenY
+		private int[][] binLocations
+		private Boolean[] binLocationsFull
+		private int nextLocation
+		private Boolean broken
+		private int brokenTime
+		private String name
+
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the gantry’s x position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the gantry’s y position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getWidth
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the gantry’s width.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+Method Name:
+		getHeight
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the gantry’s height.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+		
+	Method Name:
+		msgMoveBinToFeeder
+	Formal Parameters:
+		GUIBin bin, GUIFeeder feeder
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Has the gantry move the specified bin to the feeder
+	Method Preconditions:
+		Must have a part
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		msgPurgeBin
+	Formal Parameters:
+		GUIBin bin
+		List parts
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the gantry move the specified bin offscreen
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		msgGetNewBin
+	Formal Parameters:
+		GUIBin bin
+	Formal Type:
+		public
+	Return Type:
+		List partList
+	Method Description:
+		Makes the gantry move the specified bin onscreen
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getGUIName
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String name
+	Method Description:
+		Returns the gantry’s name to whatever calls it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		setBinLocations
+	Formal Parameters:
+		Int inputBinLocations[][]
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Takes in bins preset in the specified locations
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToXY
+	Formal Parameters:
+		Int x, int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct x and y position by moving along x first then y
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToYX
+	Formal Parameters:
+		Int x, int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct y and x position by moving along y first then x
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToY
+	Formal Parameters:
+		int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct y position, otherwise it updates it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToX
+	Formal Parameters:
+		int x
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct x position, otherwise it updates it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedWithBinToXY
+	Formal Parameters:
+		Int x, int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct x and y position by moving along x first then y with a bin
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToYX
+	Formal Parameters:
+		Int x, int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry is in the correct y and x position by moving along y first then x with a bin
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToY
+	Formal Parameters:
+		int y
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry and bin are in the correct y position, otherwise it updates it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		movedToX
+	Formal Parameters:
+		int x
+	Formal Type:
+		public
+	Return Type:
+		boolean
+	Method Description:
+		Checks if the gantry and bin are in the correct x position, otherwise it updates it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+Method Name:
+		msgBreakGantry
+	Formal Parameters:
+		none
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Breaks the gantry as a non-normative 
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+

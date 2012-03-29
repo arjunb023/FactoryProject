@@ -1,0 +1,35 @@
+System Name
+	OrderPanel
+System Description
+	Panel to keep track of history of orders, number ordered, number completed, and status or orders
+Requirements
+	Panel must keep track of history of orders, number ordered, number completed, and status or orders
+Class Description
+	 Member Data:
+		ArrayList<KitPanelOrder> currentOrders
+		Jlabel namesLabel
+		Jlabel orderedLabel
+		Jlabel completeLabel
+		Jlabel statusLabel
+
+	Methods:
+		acquireOrder(KitPanelOrder newOrder)
+			checks to see if the new order is already identical to an order in the list
+			if there is an identical order, the new quantity is added to the old order
+			if no identical order is found, a new order element in the list is created
+		updateStatus()
+			checks each order in the list so see how many completed
+			updates Status label appropriately
+		orderComplete(KitOrder doneOrder)
+			looks through list to find oldest, non-complete order matching the finished order
+			once found, increments completedNumber
+		getNames()
+			updates namesLabel with all orders in the list
+		getOrderedandCompleted()
+			updates numberCompleted label with all orders in list
+		getStatus()
+			updates statusLabel with all orders in list
+		update()
+			calls updateStatus() then sets the labels with the appropriate text
+		OrderPanel() (constructor)
+			sets up the subpanels, formats the layout

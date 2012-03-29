@@ -1,0 +1,51 @@
+System Name
+	TracePanel
+System Description
+	Panel displays the messages and print statuses of various agents in the factory.
+	User decides which agent messages to view by checking the check box for that agent.
+Requirements
+	Panel displays the messages and print statuses of various agents in the factory.
+	User decides which agent messages to view by checking the check box for that agent.
+Class Description
+	 Member Data:
+		final int MESSAGELIMIT
+		int counter
+		Queue<messageAgentPair> messages
+		JTextArea messageArea
+		JScrollPane messageScrollPane
+		JPanel options
+		JCheckBox gantryB
+		JCheckBox feederB
+		JCheckBox diverterB
+		JCheckBox laneB
+		JCheckBox nestB
+		JCheckBox partsRobotB
+		JCheckBox kitRobotB
+		JCheckBox cameraB
+		JCheckBox cartB
+		JCheckBox managerB
+
+	Methods:
+		TracePanel()
+			Constructor: adds all JCheckBoxes to options panel and adds itemListeners to each. Every itemListener increments
+			counter and reprints the panel when it's state is changed. Constructor also makes messageArea a scrollable text area
+			and adds it to the panel.
+		addPrint(String message, Agent agent)
+			Receives message from a particular agent and adds the messageAgent pair to the queue of messages to be printed
+		reprint()
+			If there are updates to be made (a checkbox has been checked or unchecked OR there are new messages to be printed),
+			adds messages that user wants (based on which checkboxes are checked) to a stringBuilder, which is then set to be the
+			text of messageArea
+		
+	class messageAgentPair
+		Member data:
+			String message
+			Agent agent
+		
+		Methods:
+			messageAgentPair(String m, Agent a)
+				Constructor: sets m to message and a to agent
+			getMessage()
+				Returns message prepended by agent's name
+			getAgent()
+				Returns agent

@@ -1,0 +1,83 @@
+StatesPanel Class:
+	Instance Variables:
+		ArrayList<String> names
+		ArrayList<String> states
+		ArrayList<Agent> agents
+		JLabel namesLabel
+		JLabel statesLabel
+		
+	Method Name:
+		getNames
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String
+	Method Description:
+		Returns the names of agents formatted to be added to the JLabel.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getStates
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String
+	Method Description:
+		Returns the states of the agents formatted to be added to the JLabel.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		addAgent
+	Formal Parameters:
+		Agent agent
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Adds an agent to the panel.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None
+		
+	Method Name:
+		updateStates
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Updates the panel.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None
+	Input and Output Format:
+		None

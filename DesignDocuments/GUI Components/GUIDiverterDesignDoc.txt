@@ -1,0 +1,227 @@
+Diverter Class:
+	Instance variables:  
+		private int xPos
+		private int yPos
+		private int width
+		private int height
+		private Part part
+		private ImageIcon image
+		private int stdWidth
+		private int stdHeight
+		private ImageIcon stdImage
+		private ArrayList<part> partList
+		private FeederAgent feederAgent
+		private String name
+
+	Method Name:
+		getX
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the diverter?s x position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getY
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the diverter?s y position.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+	Method Name:
+		getWidth
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the diverter?s width.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+	
+Method Name:
+		getHeight
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		int
+	Method Description:
+		Returns the diverter?s height.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		ZoomIn
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the size of the diverter bigger by the specified amount.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		ZoomOut
+	Formal Parameters:
+		int amount
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Makes the size of the diverter smaller by the specified amount.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+		
+		
+	Method Name:
+		msgDoAddPart
+	Formal Parameters:
+		GUIPart part
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Adds a part to the part list and moves the part from the feeder onto the diverter
+	Method Preconditions:
+		Must have a part
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		msgDoMovePart
+	Formal Parameters:
+		GUIPart part
+	Formal Type:
+		public
+	Return Type:
+		void
+	Method Description:
+		Moves the part to the lane from the diverter
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+
+	Method Name:
+		getPartList
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		List partList
+	Method Description:
+		This returns the list of parts to whatever calls it.
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		getGUIName
+	Formal Parameters:
+		None
+	Formal Type:
+		public
+	Return Type:
+		String name
+	Method Description:
+		Returns the diverter?s name to whatever calls it
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None
+
+	Method Name:
+		msgDoChangeOrientation
+	Formal Parameters:
+		DiverterDirction direction
+	Formal Type:
+		public
+	Return Type:
+		String name
+	Method Description:
+		Changes the orientation of the diverter to point to the specified lane
+	Method Preconditions:
+		None
+	Method Postconditions: 
+		None
+	Method Interaction:
+		None 
+	Input and Output Format:
+		None

@@ -1,0 +1,471 @@
+System Name: Cart
+	System Description: The Carts system will be used to transport empty kits to the factory and completed kits out of the factory. The Kit Robot will move the empty kits from a Cart to the Kit Stand and the completed kits from the Kit Stand back to the Cart.
+	Instance Variables:
+		private CartAgent agent = null;
+		private GUIKit myKit = null;
+		private enum Command { noCommand, DoCome, DoGo, DoMove };
+		private Rectangle2D.Double cartPlaceHolder;
+		private int counter = 0;
+		private int xPos = 20;
+		private int yPos;
+		private int yDest;
+		private int width;
+		private int height;
+		private int angle;
+		private int maxSize;
+		private String name;
+		private ImageIcon image;
+		private final int hBuffer = 5;
+		private final int vBuffer = 20;
+		private final ImageIcon stdImage = new ImageIcon("images/cart.png");
+		private final int stdWidth = stdImage.getIconWidth() / 2;
+		private final int stdHeight = stdImage.getIconHeight() / 2;
+		private Command command = Command.noCommand;
+		private static final int yStart = 750;
+		private static final int yWait1 = 100;
+		private static final int yWait2 = 250;
+		private static final int yWait3 = 400;
+		private static final int yLeave = -150;
+		
+	Methods:
+		Method Name:
+			GUICart
+		Formal Parameters:
+			CartAgent c
+			int kitSize
+			[ArrayList of GUIComponents called newKits]
+			[ArrayList of GUIKits called newKits]
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets default values
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			update
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Moves and updates cart, sends message to it's agent
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			DoCome
+		Formal Parameters:
+			stopNum
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Moves cart on to (stopNum) postion
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			DoGo
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Moves cart off the screen
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			DoMove
+		Formal Parameters:
+			int stopNum
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Moves cart to stpopNum location
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			setKit
+		Formal Parameters:
+			int kitSize
+			ArrayList<GUIComponent> newKits
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Creates a new kit and adds it to newKits array. Necessary for threading
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			IfKitIsNull
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			boolean
+		Method Description:
+			Returns if myKit exists
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			giveKit
+		Formal Parameters:
+			GUIKit k
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets myKit to parameter kit k, updates that kit's x and y position, sends agent a HereIsAFullKit message
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getKit
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			GUIKit
+		Method Description:
+			Gives KitRobot the kit that cart is holding, sets own kit to null, sends agent a GivenOut message
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			zoom
+		Formal Parameters:
+			int amount
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Makes cart appear (amount) times larger or smaller
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			rotate
+		Formal Parameters:
+			int amount
+		Formal Type:
+			public
+		Return Type:
+			void
+		Method Description:
+			Rotates cart by specified amount
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getX
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns cart's x position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getY
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns cart's y position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			givePart
+		Formal Parameters:
+			GUIPart part
+			GUIComponent giver
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			getPart
+		Formal Parameters:
+			int position
+		Formal Type:
+			None
+		Return Type:
+			GUIPart
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			gotPart
+		Formal Parameters:
+			GUIPart part
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			None. Has to be implemented to extend GUIObject class
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			setCartAgent
+		Formal Parameters:
+			CartAgent cartAgent
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			Sets own agent to parameter cartAgent
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getName
+		Formal Parameters:
+			None
+		Formal Type:
+			None
+		Return Type:
+			String
+		Method Description:
+			Returns cart's name
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			draw
+		Formal Parameters:
+			Graphics g1
+		Formal Type:
+			None
+		Return Type:
+			None
+		Method Description:
+			Draws cart, including any rotation necessary
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			setX
+		Formal Parameters:
+			int x
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets cart's x position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			setY
+		Formal Parameters:
+			int y
+		Formal Type:
+			public
+		Return Type:
+			None
+		Method Description:
+			Sets cart's y position
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+			
+		Method Name:
+			getWidth
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns cart's width
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
+		
+		Method Name:
+			getHeight
+		Formal Parameters:
+			None
+		Formal Type:
+			public
+		Return Type:
+			int
+		Method Description:
+			Returns cart's height
+		Method Preconditions:
+			None
+		Method Postconditions: 
+			None
+		Method Interaction:
+			None 
+		Input and Output Format:
+			None
